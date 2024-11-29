@@ -1,0 +1,125 @@
+﻿<Window x:Class="YoutubeWatcher.Views.MainWindow"
+        xmlns:vm="clr-namespace:YoutubeWatcher.ViewModels"
+        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Width="800"
+        Height="450"
+        MinWidth="640"
+        MinHeight="480"
+        mc:Ignorable="d"
+        Title="YouTube Watcher"
+        Loaded="MainWindow_OnLoaded"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen"
+        PreviewKeyDown="Window_OnPreviewKeyDown"
+        ui:WindowHelper.FixMaximizedWindow="True"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Background="{DynamicResource SystemControlPageBackgroundChromeLowBrush}">
+    
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="80" MaxHeight="120" x:Name="LogRow"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0"
+              Margin="12">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <ui:HyperlinkButton Grid.Column="0"
+                                ToolTipService.ToolTip="Назад"
+                                Command="{Binding GoBackCommand}">
+                <ui:IconAndText Icon="{x:Static ui:SegoeFluentIcons.Back}"/>
+            </ui:HyperlinkButton>
+            
+            <ui:HyperlinkButton Grid.Column="1"
+                                ToolTipService.ToolTip="Вперёд"
+                                Command="{Binding GoForwardCommand}">
+                <ui:IconAndText Icon="{x:Static ui:SegoeFluentIcons.Forward}"/>
+            </ui:HyperlinkButton>
+            
+            <ui:HyperlinkButton Grid.Column="2"
+                                ToolTipService.ToolTip="Обновить"
+                                Command="{Binding RefreshCommand}">
+                <ui:IconAndText Icon="{x:Static ui:SegoeFluentIcons.Refresh}"/>
+            </ui:HyperlinkButton>
+            
+            <ui:AutoSuggestBox Grid.Column="3"
+                               x:Name="QueryBox"
+                               HorizontalAlignment="Stretch"
+                               PreviewKeyDown="SearchBox_OnPreviewKeyDown"
+                               Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                
+            </ui:AutoSuggestBox>
+        </Grid>
+        
+        <Border Grid.Row="1"
+                CornerRadius="16">
+            <wpf:WebView2
+                          x:Name="webView"
+                          Language="ru-RU"
+                          Margin="8,0,8,2"
+                          Source="{Binding Url, Mode=TwoWay}"/>
+        </Border>
+        
+        <GridSplitter Height="2"
+                      Grid.Row="1"
+                      ShowsPreview="True"
+                      ResizeDirection="Rows"
+                      VerticalAlignment="Bottom"
+                      HorizontalAlignment="Stretch"
+                      ResizeBehavior="BasedOnAlignment"/>
+        
+        <Grid Grid.Row="2"
+              ui:PanelHelper.Spacing="4"
+              ScrollViewer.CanContentScroll="True"
+              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+              Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        
+            <StackPanel Grid.Column="0"
+                        ui:PanelHelper.Spacing="4">
+                <ui:HyperlinkButton ToolTipService.ToolTip="Нажмите, чтобы очистить консоль"
+                                    Command="{Binding ClearStatusCommand}">
+                    <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Delete_24_Filled}"/>
+                </ui:HyperlinkButton>
+                <ui:HyperlinkButton Command="{Binding CopyStatusCommand}"
+                                    ToolTipService.ToolTip="Нажмите, чтобы скопировать сообщение">
+                    <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Copy_24_Filled}"/>
+                </ui:HyperlinkButton>
+            </StackPanel>
+            
+            <TextBox FontSize="11"
+                     x:Name="LogBox"
+                     Padding="4"
+                     Grid.Column="1"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Stretch"
+                     BorderBrush="Transparent"
+                     IsReadOnlyCaretVisible="False"
+                     VerticalContentAlignment="Top"
+                     Text="{Binding StatusMessage, Mode=TwoWay}"
+                     Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <UseWPF>true</UseWPF>
+        <Nullable>enable</Nullable>
+        <OutputType>WinExe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>Youtube Watcher</AssemblyName>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <ApplicationIcon>Assets/youtube.ico</ApplicationIcon>
+        <!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
+        <TargetFramework>net9.0-windows10.0.18362.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+      <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30" />
+      <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Assets\youtube.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="tcp.ovpn">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="debug.log">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Dist\OpenVPN-2.6.12-I001-amd64.msi">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Dist\OpenVPN-2.6.12-I001-arm64.msi">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Dist\OpenVPN-2.6.12-I001-x86.msi">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="README.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>
